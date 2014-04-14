@@ -34,7 +34,9 @@ r2 <- calc(r, fun=function(x) rev(x)/max(x))  # create alpha mask
   
 
 # import pictures
-img <- readJPEG("seagrass.jpg", native=TRUE)
+img1 <- readJPEG("posidonia.jpg", native=TRUE)
+img2 <- readJPEG("donzella.jpg", native=TRUE)
+img3 <- readJPEG("scriba.jpg", native=TRUE)
 
 
 # set colors
@@ -58,11 +60,17 @@ grid(nx=19, ny=25, lwd=0.8, lty=1, col="white")  # plot grid
 image(r2, col = mask, add=TRUE)  # plot gradient transparency mask
 
 # pictures
-polygon(x=c(1-0,5+0.3,5+0.3,1-0),y=c(11-0.3,11-0.3,15+0.1,15+0.1),
-        col=shadow,border=NA) # shadow mask
-polygon(x=c(1-0.2,5+0.2,5+0.2,1-0.2),y=c(11-0.2,11-0.2,15+0.2,15+0.2),
-        col=frame,border="white") # white mask
-rasterImage(img,1,11,5,15)
+picture <- function(img,x,y,xdim,ydim)
+{
+  polygon(x=c(x-0,xdim+0.3,xdim+0.3,x-0),y=c(y-0.3,y-0.3,ydim+0.1,ydim+0.1),
+          col=shadow,border=NA) # shadow mask
+  polygon(x=c(x-0.2,xdim+0.2,xdim+0.2,x-0.2),y=c(y-0.2,y-0.2,ydim+0.2,ydim+0.2),
+          col=frame,border="white") # white mask
+  rasterImage(img,x,y,xdim,ydim)  
+}
+picture(img1,1,11,5,15)
+picture(img2,7.5,11,11.5,15)
+picture(img3,14,11,18,15)
 
 # text
 text(x=10, y=23, pos=1, "David March Morlá",col="white",family="cambria",font=2, cex=2)
@@ -70,7 +78,6 @@ text(x=1, y=5.5, pos=4, labels="Geospatial modelling in marine", col=palette[8],
 text(x=1, y=4, pos=4, "recreational fisheries science",col=palette[8],family="cambria",font=2, cex=2.4)
 text(x=1, y=2.5, pos=4, "PhD Thesis",col=palette[8],family="cambria",font=1, cex=2)
 
-
-
+# close
 par(op)
 dev.off()
